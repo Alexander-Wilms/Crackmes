@@ -23,6 +23,8 @@ void process_string(const char *input) {
 	char *copy = strdup(input);
 	int count = 0;
 	char all_prime = 1;
+	char granted[] = {0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x20, 0x67,
+					  0x72, 0x61, 0x6e, 0x74, 0x65, 0x64, 0x5c, 0x00};
 	int separator[] = {0x2d, 0x00};
 
 	// Split the string at each '-' character
@@ -42,7 +44,7 @@ void process_string(const char *input) {
 
 	// Check if all numbers are prime
 	if (all_prime && count > 0) {
-		printf("Access granted\n");
+		printf(granted);
 	} else {
 		printf("Access denied\n");
 	}
