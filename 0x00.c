@@ -17,14 +17,22 @@ long is_prime(int num) {
 }
 
 void process_string(const char *input) {
-    // String must consist of prime numbers separated by dashes
+	// String must consist of prime numbers separated by dashes
 
 	char *token;
 	char *copy = strdup(input);
 	int count = 0;
+
 	char all_prime = 1;
-	char granted[] = {0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x20, 0x67,
-					  0x72, 0x61, 0x6e, 0x74, 0x65, 0x64, 0x5c, 0x00};
+
+	char granted[] = {
+		0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x20, 0x67,
+		0x72, 0x61, 0x6e, 0x74, 0x65, 0x64, 0x0a, 0x00, // access granted
+		0x41, 0x43, 0x43, 0x45, 0x53, 0x53, 0x20, 0x44,
+		0x45, 0x4E, 0x49, 0x45, 0x44, 0x20, 0x0a, 0x00}; // ACCESS DENIED
+	if (strlen(input) != 10) {
+		goto WRONG_LENGTH;
+	}
 	int separator[] = {0x2d, 0x00};
 
 	// Split the string at each '-' character
@@ -42,17 +50,18 @@ void process_string(const char *input) {
 
 	free(copy);
 
+WRONG_LENGTH:
+	all_prime *= count;
+
 	// Check if all numbers are prime
-	if (all_prime && count > 0) {
-		printf(granted);
-	} else {
-		printf("Access denied\n");
-	}
+	char output[256];
+	strcpy(output, granted + (16 * (int)(bool)!all_prime));
+	printf(output);
 }
 
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
-		printf("Usage: %s <input_string>\n", argv[0]);
+		printf("Usage: %s password\n", argv[0]);
 		return 1;
 	}
 
