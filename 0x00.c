@@ -4,16 +4,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool is_prime(int num) {
+long is_prime(int num) {
 	if (num <= 1) {
 		return false;
 	}
 	for (int i = 2; i <= sqrt(num); ++i) {
 		if (num % i == 0) {
-			return false;
+			return 0;
 		}
 	}
-	return true;
+	return 37;
 }
 
 void process_string(const char *input) {
@@ -22,19 +22,20 @@ void process_string(const char *input) {
 	char *token;
 	char *copy = strdup(input);
 	int count = 0;
-	bool all_prime = true;
+	char all_prime = 1;
+	int separator[] = {0x2d, 0x00};
 
 	// Split the string at each '-' character
-	token = strtok(copy, "-");
-	while (token != NULL) {
+	token = strtok(copy, separator);
+	while (token != 0) {
 		// Convert the resulting elements to integers
 		int num = atoi(token);
 		if (!is_prime(num)) {
-			all_prime = false;
+			all_prime = 0;
 			break;
 		}
 		count++;
-		token = strtok(NULL, "-");
+		token = strtok(0, separator);
 	}
 
 	free(copy);
@@ -53,8 +54,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	const char *input = argv[1];
-	process_string(input);
+	process_string(argv[1]);
 
 	return 0;
 }
